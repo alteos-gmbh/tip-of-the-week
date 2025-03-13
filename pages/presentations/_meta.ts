@@ -13,4 +13,5 @@ export default {
   "250130-accessibility": "30.01.25 - Accessibility",
   "250206-data-brokers": "06.02.25 - Data Brokers",
   "250213-eisenhower-matrix": "13.02.25 - The Eisenhower Matrix",
+  "250313-the-science-behind-fasting": "13.03.25 - The Science Behind Fasting",
 };
