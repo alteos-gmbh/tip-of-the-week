@@ -1,0 +1,117 @@
+# Changesets Setup Guide
+
+> Author: [Priyankar Prasad](prp@alteos.com)
+> Date: 03.04.2025
+
+## What is Changeset?
+
+Changesets is a tool for managing versions and changelogs in JavaScript/TypeScript projects. It's particularly useful for:
+
+- 📦 Managing package versions
+- 🤝 Coordinating releases across multiple packages *(works with monorepos)*
+- 🔄 Automating GitHub releases
+
+## Why Use Changesets?
+
+1. **Structured Change Management**
+   - Track changes with detailed descriptions
+   - Automatically determine version bumps
+   - Generate comprehensive changelogs
+
+2. **GitHub Integration**
+   - Automated release PRs
+   - GitHub releases creation
+   - Changelog generation
+
+3. **Developer Experience**
+   - Simple CLI interface
+   - Automated version management
+   - Reduces manual release work
+
+## Quick Setup
+
+1. **Install Changesets**
+   ```bash
+   npm install --save-dev @changesets/cli
+   ```
+
+2. **Initialize Changesets**
+   ```bash
+   npx changeset init
+   ```
+
+   This will create a `.changeset` directory with `config.json`:
+   ```json
+     "privatePackages": {
+       "version": true,
+       "tag": true
+     }
+   ```
+   These settings allow publishing releases to private GitHub repositories.
+
+3. **Add Scripts to package.json**
+   ```json
+    "scripts": {
+        "version": "changeset version",
+        "publish": "changeset publish",
+        "changeset": "changeset"
+      }
+   ```
+
+4. **Install Changeset Bot (Recommended)**
+   - Go to [Changeset Bot](https://github.com/apps/changeset-bot)
+   - Click "Install"
+   - Select the repositories where you want to enable the bot
+
+   The bot will:
+   - Comment on PRs that need changesets
+   - Provide direct links to create changesets
+   - Confirm when changesets are properly added
+
+## Usage
+
+1. **Create a Changeset**
+   ```bash
+   npm run changeset
+   ```
+   Follow the prompts to:
+   - Choose version bump type
+   - Add change description
+
+2. **Commit Changes**
+   ```bash
+   git add .
+   git commit -m "feat: added new feature"
+   git push
+   ```
+
+3. **GitHub Actions will**:
+   - Create a Release PR
+   - Update versions when merged
+   - Create GitHub releases
+
+## GitHub Actions Setup
+
+The workflow is configured to:
+- Run on pushes to main branch
+- Create/update release PRs
+- Publish releases when PRs are merged
+
+Check `.github/workflows/release.yml` for the complete workflow configuration.
+
+## Best Practices
+
+1. Create changesets for:
+   - New features
+   - Bug fixes
+   - Breaking changes
+
+2. Write clear, descriptive changeset messages
+
+3. Review generated PRs before merging
+
+## Need Help?
+
+- [Changesets Documentation](https://github.com/changesets/changesets)
+- [Changesets GitHub Action](https://github.com/changesets/action)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
