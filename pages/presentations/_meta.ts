@@ -13,7 +13,10 @@ export default {
   "250130-accessibility": "30.01.25 - Accessibility",
   "250206-data-brokers": "06.02.25 - Data Brokers",
   "250213-eisenhower-matrix": "13.02.25 - The Eisenhower Matrix",
+  "250220-quick-form": "20.02.25 - Quick Form",
+  "250306-thinking-fast-and-slow": "06.03.25 - Thinking Fast and Slow",
   "250313-the-science-behind-fasting": "13.03.25 - The Science Behind Fasting",
+  "250403-changesets": "03.04.25 - Changesets",
   "250417-qa-pro-toolkit": "17.04.25 - QA Pro Toolkit",
   "250515-fastify-zod-4": "15.05.25 - Fastify + Zod 4",
 };
