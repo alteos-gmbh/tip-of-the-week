@@ -179,7 +179,7 @@ const querystring = z.object({
   name: z.string(),
 });
 const body = z.object({
-  someKey: z.string(),
+  someKey: z.string().nonempty(),
   someOtherKey: z.number(),
 });
 const successResponse = z.object({
