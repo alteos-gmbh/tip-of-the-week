@@ -1,0 +1,272 @@
+# Fastify with Zod 4
+
+> Author: [Igor](igc@alteos.com)
+> Date: 15.05.2025
+
+This presentation is on how Zod v4 is a great match to fastify APIs.
+
+## Intro to fastify
+
+- Fastest Nodejs framework available
+- Maintained by core Nodejs contributors
+
+A simple API with one endpoint:
+
+```ts
+import Fastify from "fastify";
+const fastify = Fastify({
+  logger: true,
+});
+
+// Declare a route
+fastify.get("/", async function handler(request, reply) {
+  return { hello: "world" };
+});
+
+// Run the server!
+try {
+  await fastify.listen({ port: 3000 });
+} catch (err) {
+  fastify.log.error(err);
+  process.exit(1);
+}
+```
+
+## Fastify JSON Schema
+
+Fastify uses JSON Schema to:
+
+- parse and validate request querystring and body
+- serialize and filters responses
+- it speeds up serialization by a factor of 2-3
+
+```ts
+fastify.post(
+  "/:id",
+  {
+    schema: {
+      params: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+        },
+        required: ["id"],
+      },
+      querystring: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+        },
+        required: ["name"],
+      },
+      body: {
+        type: "object",
+        properties: {
+          someKey: { type: "string" },
+          someOtherKey: { type: "number" },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            hello: { type: "string" },
+          },
+        },
+      },
+    },
+  },
+  async ({ body, query, params }, reply) => {
+    return { hello: "world" };
+  }
+);
+```
+
+But JSON Schemas are too verbose...
+
+## Fluent-Schema to the rescue
+
+- [fluent-json-schema](https://github.com/fastify/fluent-json-schema)
+- Faster and shorter way to write a JSON Schema via a fluent API
+
+```ts
+const params = S.object().prop("id", S.string()).required(["id"]);
+
+const querystring = S.object().prop("name", S.string()).required(["name"]);
+
+const body = S.object()
+  .prop("someKey", S.string())
+  .prop("someOtherKey", S.number())
+  .required(["someKey", "someOtherKey"]);
+
+const response = S.object().prop("hello", S.string()).required(["hello"]);
+
+fastify.post(
+  "/",
+  {
+    schema: {
+      params,
+      querystring,
+      body,
+      response: {
+        200: response,
+      },
+    },
+  },
+  async ({ body, query, params }, reply) => {
+    return { hello: "world" };
+  }
+);
+```
+
+Great improvement but still not that familiar for many developers used to Zod...
+
+## Zod V4
+
+Zod V4 brought some interesting changes like:
+
+- better parse performance
+- improved type inference (Typescript)
+- smaller bundle size
+- among many other
+
+But the most important for Fastify would be `z.toJSONSchema()`:
+
+```ts
+const params = z.object({
+  id: z.string(),
+});
+const querystring = z.object({
+  name: z.string(),
+});
+const body = z.object({
+  someKey: z.string().nonempty(),
+  someOtherKey: z.number(),
+});
+const response = z.object({
+  hello: z.string(),
+});
+
+fastify.post<{
+  Params: z.infer<typeof params>;
+  Querystring: z.infer<typeof querystring>;
+  Body: z.infer<typeof body>;
+}>(
+  "/",
+  {
+    schema: {
+      params: z.toJSONSchema(params),
+      querystring: z.toJSONSchema(querystring),
+      body: z.toJSONSchema(body),
+      response: {
+        200: z.toJSONSchema(response),
+      },
+    },
+  },
+  async ({ body, query, params }, reply) => {
+    return { hello: "world" };
+  }
+);
+```
+
+But an endpoint definition could be simplified even further to:
+
+```ts
+const params = z.object({
+  id: z.string(),
+});
+const querystring = z.object({
+  name: z.string(),
+});
+const body = z.object({
+  someKey: z.string().nonempty(),
+  someOtherKey: z.number(),
+});
+const successResponse = z.object({
+  hello: z.string(),
+});
+
+defineRoute(
+  "POST",
+  "/",
+  {
+    params,
+    querystring,
+    body,
+    response: {
+      200: successResponse,
+    },
+  },
+  async ({ body, query, params }, reply) => {
+    return { hello: "world" };
+  }
+);
+```
+
+with the help of a utility function:
+
+```ts
+function defineRoute<
+  ParamsSchemaType extends z.ZodSchema,
+  BodySchemaType extends z.ZodSchema,
+  QuerystringSchemaType extends z.ZodSchema
+>(
+  method: string,
+  path: string,
+  {
+    params,
+    querystring,
+    body,
+    response,
+  }: {
+    params?: ParamsSchemaType;
+    querystring?: QuerystringSchemaType;
+    body?: BodySchemaType;
+    response: Record<number, z.ZodSchema>;
+  },
+  handler: (
+    request: FastifyRequest<{
+      Params: z.infer<ParamsSchemaType>;
+      Querystring: z.infer<QuerystringSchemaType>;
+      Body: z.infer<BodySchemaType>;
+    }>,
+    reply: FastifyReply
+  ) => Promise<any>
+) {
+  type ParamsType = z.infer<ParamsSchemaType>;
+  type BodyType = z.infer<BodySchemaType>;
+  type QuerystringType = z.infer<QuerystringSchemaType>;
+
+  return async function (fastify: FastifyInstance, options: object) {
+    fastify[method]<{
+      Params: ParamsType;
+      Querystring: QuerystringType;
+      Body: BodyType;
+    }>(
+      path,
+      {
+        schema: {
+          querystring: querystring ? z.toJSONSchema(querystring) : undefined,
+          params: params ? z.toJSONSchema(params) : undefined,
+          body: body ? z.toJSONSchema(body) : undefined,
+          response: Object.fromEntries(
+            Object.entries(response).map(([status, schema]) => [
+              status,
+              z.toJSONSchema(schema),
+            ])
+          ),
+        },
+      },
+      handler
+    );
+  };
+}
+```
+
+
+
+## Resources
+
+- [Fastify](https://github.com/fastify/fastify)
+- [Fluent-JSON-Schema](https://github.com/fastify/fluent-json-schema)
+- [Zod V4](https://v4.zod.dev/v4)
