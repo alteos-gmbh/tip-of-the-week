@@ -13,9 +13,9 @@ Here further information about how to use [Nextra Docs](https://nextra.site/docs
 
 ---
 
-![](.github/so_awesome.gif)
-
 [**Live Demo →**](https://alteos-gmbh.github.io/tip-of-the-week/)
+
+![](.github/so_awesome.gif)
 
 ---
 
@@ -41,7 +41,7 @@ pnpm i
 pnpm dev
 ```
 
-Then visit: [localhost:3000](http://localhost:3000).
+Then visit: [localhost:3000](http://localhost:3000/tip-of-the-week).
 
 ### 2. Build for Production
 
