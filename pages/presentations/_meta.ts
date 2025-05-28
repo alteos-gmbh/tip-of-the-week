@@ -19,4 +19,5 @@ export default {
   "250403-Changesets": "03.04.25 - Changesets",
   "250417-qa-pro-toolkit": "17.04.25 - QA Pro Toolkit",
   "250515-fastify-zod-4": "15.05.25 - Fastify + Zod 4",
+  "250605-UUID7-ULID": "05.06.25 - UUID7 and ULID as Database Primary Key",
 };

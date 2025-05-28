@@ -1,0 +1,99 @@
+# UUID7 and ULID as Database Primary Key
+
+> Author: [Majid](may@alteos.com)  
+> Date: 05.06.2025
+
+This presentation explains why UUID7 and ULID are choices for primary keys in databases, especially for modern, high-scale applications.
+
+![Logo](/UUID7-ULID/UUID7-ULID.jpg)
+
+## The Importance of ID Choice
+
+Choosing the right ID type impacts:
+⚡ Performance  
+📈 Scalability  
+🔐 Security
+
+Especially critical for:
+- Distributed systems
+- High-traffic APIs
+- Product/catalog pages
+
+## Problems with Auto-Increment IDs
+
+❌ Why auto-increment is outdated:
+- Causes table locks in high concurrency
+- Easy to guess number/order of records
+- Not suitable for distributed systems
+
+## Traditional Solution – UUIDv4
+
+✅ Pros:
+- Globally unique
+- No coordination needed
+- Prevents pattern leakage
+
+❌ Cons:
+- Random order degrades database performance
+
+## The Real Problem with UUIDv4
+
+Most databases use B-Trees for indexing:  
+📚 Keeps data sorted  
+🔍 Enables fast lookups (O(log n))  
+⚙️ Supports efficient insert/update/delete
+
+But...
+
+Random UUIDs = 🔄 Disorder  
+→ Constant Page Splits  
+→ Frequent Tree Rebalancing
+
+### What This Causes
+
+📉 Performance Impact:
+- Slow inserts
+- High I/O and memory usage
+- Poor performance in high-traffic scenarios
+
+## Modern Solutions
+
+Two Better Options:  
+🔹 ULID: Timestamp + Random data  
+🔹 UUIDv7: Time-ordered, UUID-compliant
+
+## Why ULID & UUIDv7 Work Better
+
+🔑 Inserted in order, not randomly
+
+Benefits:  
+✅ Fewer Page Splits  
+✅ Faster inserts  
+✅ Efficient time-based queries
+
+## When to Use Which
+
+| Feature              | ULID | UUIDv7 |
+| -------------------- | ---- | ------ |
+| Shorter, readable    | ✅    | ❌      |
+| UUID-compatible      | ❌    | ✅      |
+| Lexicographical sort | ✅    | ✅      |
+
+## Format Comparison
+
+##### ULID:
+- 26-character Base32 string
+- Timestamp encoded at start
+- Example: 01AN4Z07BY79KA1307SR9X4MV3
+
+##### UUIDv7:
+- Standard UUID format (hex with dashes)
+- Timestamp encoded at start
+- Example: 017f45e0-7e1a-7a3f-8bbc-4dbf7e6d9c3a
+
+## Final Recommendation
+
+- Use ULID if you value short and readable IDs
+- Use UUIDv7 for maximum compatibility with existing systems
+
+Both offer significant improvements in performance and scalability over UUIDv4 and auto-increment IDs.
