@@ -1,5 +1,5 @@
 export default {
-  "000000-template": "__Template",
+  "000000-template": "__Template file",
   "241024-vercel-nextra": "24.10.24 - Vercel + Nextra",
   "241031-ollama": "31.10.24 - Ollama Local LLMs",
   "241107-slidev": "07.11.24 - Slidev",
@@ -16,7 +16,7 @@ export default {
   "250220-quick-form": "20.02.25 - Quick Form",
   "250306-thinking-fast-and-slow": "06.03.25 - Thinking Fast and Slow",
   "250313-the-science-behind-fasting": "13.03.25 - The Science Behind Fasting",
-  "250403-changesets": "03.04.25 - Changesets",
+  "250403-Changesets": "03.04.25 - Changesets",
   "250417-qa-pro-toolkit": "17.04.25 - QA Pro Toolkit",
   "250515-fastify-zod-4": "15.05.25 - Fastify + Zod 4",
 };
