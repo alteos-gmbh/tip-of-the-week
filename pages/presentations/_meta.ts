@@ -14,6 +14,7 @@ export default {
   "250206-data-brokers": "06.02.25 - Data Brokers",
   "250213-eisenhower-matrix": "13.02.25 - The Eisenhower Matrix",
   "250220-quick-form": "20.02.25 - Quick Form",
+  "250227-emotional-detachment": "27.02.25 - Emotional Detachment",
   "250306-thinking-fast-and-slow": "06.03.25 - Thinking Fast and Slow",
   "250313-the-science-behind-fasting": "13.03.25 - The Science Behind Fasting",
   "250403-Changesets": "03.04.25 - Changesets",
