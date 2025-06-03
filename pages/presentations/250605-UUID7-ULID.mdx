@@ -97,3 +97,40 @@ Benefits:
 - Use UUIDv7 for maximum compatibility with existing systems
 
 Both offer significant improvements in performance and scalability over UUIDv4 and auto-increment IDs.
+
+# Q&A
+
+<details>
+  <summary>Q1: Why exactly do auto-increment IDs cause table locks?</summary>
+  
+  Auto-increment IDs require the database to generate sequential numbers. Under high concurrency, many transactions compete to get the next number, which leads to locking or contention on the table or the ID generator, slowing down inserts.
+
+</details>
+
+<details>
+  <summary>Q2: Can’t we just use UUIDv4 with some database tuning?</summary>
+  
+While some tuning can help, the core problem is the random order of UUIDv4 keys. This causes frequent page splits and tree reorganizations in B-Tree indexes, which is a fundamental inefficiency that tuning can’t fully fix.
+
+</details>
+
+<details>
+  <summary>Q3: Are ULID and UUIDv7 supported natively in popular databases?</summary>
+  
+Most databases don’t natively generate ULID or UUIDv7 yet, but you can generate them in your application layer or via extensions/functions, then store them as strings or UUID types. Support is growing as these standards gain popularity.
+
+</details>
+
+<details>
+  <summary>Q4: Which has better performance in practice, ULID or UUIDv7?</summary>
+  
+Performance differences are usually minimal because both are time-ordered. The choice depends more on readability (ULID is shorter and easier to handle) versus compatibility with existing UUID systems (UUIDv7).
+
+</details>
+
+<details>
+  <summary>Q5: How do these affect security? Can time-ordering expose sensitive info?</summary>
+  
+Time-ordering slightly reveals creation time, but this is usually acceptable. Both ULID and UUIDv7 still include randomness to prevent easy guessing of other IDs. If timestamp privacy is critical, additional measures may be needed.
+
+</details>
