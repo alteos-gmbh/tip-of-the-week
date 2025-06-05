@@ -1,15 +1,15 @@
-# UUID7 and ULID as Database Primary Key
+# UUIDv7 and ULID as Database Primary Key
 
 > Author: [Majid](may@alteos.com)  
 > Date: 05.06.2025
 
-This presentation explains why UUID7 and ULID are choices for primary keys in databases, especially for modern, high-scale applications.
+This presentation explains why UUIDv7 and ULID are choices for primary keys in databases, especially for modern, high-scale applications.
 
-![Logo](/UUID7-ULID/UUID7-ULID.jpg)
+![Logo](/UUIDv7-ULID/UUIDv7-ULID.jpg)
 
 ## The Importance of ID Choice
 
-Choosing the right ID type impacts:
+Choosing the right ID type impacts:  
 ⚡ Performance  
 📈 Scalability  
 🔐 Security
@@ -81,12 +81,14 @@ Benefits:
 
 ## Format Comparison
 
-##### ULID:
+### ULID
+
+Universally Unique Lexicographically Sortable Identifier, is a 128-bit identifier that is designed to be unique and lexicographically sortable.
 - 26-character Base32 string
 - Timestamp encoded at start
 - Example: 01AN4Z07BY79KA1307SR9X4MV3
 
-##### UUIDv7:
+### UUIDv7
 - Standard UUID format (hex with dashes)
 - Timestamp encoded at start
 - Example: 017f45e0-7e1a-7a3f-8bbc-4dbf7e6d9c3a
@@ -98,7 +100,7 @@ Benefits:
 
 Both offer significant improvements in performance and scalability over UUIDv4 and auto-increment IDs.
 
-# Q&A
+# FAQ
 
 <details>
   <summary>Q1: Why exactly do auto-increment IDs cause table locks?</summary>
