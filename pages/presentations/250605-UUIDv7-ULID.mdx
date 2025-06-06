@@ -1,0 +1,138 @@
+# UUIDv7 and ULID as Database Primary Key
+
+> Author: [Majid](may@alteos.com)  
+> Date: 05.06.2025
+
+This presentation explains why UUIDv7 and ULID are choices for primary keys in databases, especially for modern, high-scale applications.
+
+![Logo](/UUIDv7-ULID/UUIDv7-ULID.jpg)
+
+## The Importance of ID Choice
+
+Choosing the right ID type impacts:  
+⚡ Performance  
+📈 Scalability  
+🔐 Security
+
+Especially critical for:
+- Distributed systems
+- High-traffic APIs
+- Product/catalog pages
+
+## Problems with Auto-Increment IDs
+
+❌ Why auto-increment is outdated:
+- Causes table locks in high concurrency
+- Easy to guess number/order of records
+- Not suitable for distributed systems
+
+## Traditional Solution – UUIDv4
+
+✅ Pros:
+- Globally unique
+- No coordination needed
+- Prevents pattern leakage
+
+❌ Cons:
+- Random order degrades database performance
+
+## The Real Problem with UUIDv4
+
+Most databases use B-Trees for indexing:  
+📚 Keeps data sorted  
+🔍 Enables fast lookups (O(log n))  
+⚙️ Supports efficient insert/update/delete
+
+But...
+
+Random UUIDs = 🔄 Disorder  
+→ Constant Page Splits  
+→ Frequent Tree Rebalancing
+
+### What This Causes
+
+📉 Performance Impact:
+- Slow inserts
+- High I/O and memory usage
+- Poor performance in high-traffic scenarios
+
+## Modern Solutions
+
+Two Better Options:  
+🔹 ULID: Timestamp + Random data  
+🔹 UUIDv7: Time-ordered, UUID-compliant
+
+## Why ULID & UUIDv7 Work Better
+
+🔑 Inserted in order, not randomly
+
+Benefits:  
+✅ Fewer Page Splits  
+✅ Faster inserts  
+✅ Efficient time-based queries
+
+## When to Use Which
+
+| Feature              | ULID | UUIDv7 |
+| -------------------- | ---- | ------ |
+| Shorter, readable    | ✅    | ❌      |
+| UUID-compatible      | ❌    | ✅      |
+| Lexicographical sort | ✅    | ✅      |
+
+## Format Comparison
+
+### ULID
+
+Universally Unique Lexicographically Sortable Identifier, is a 128-bit identifier that is designed to be unique and lexicographically sortable.
+- 26-character Base32 string
+- Timestamp encoded at start
+- Example: 01AN4Z07BY79KA1307SR9X4MV3
+
+### UUIDv7
+- Standard UUID format (hex with dashes)
+- Timestamp encoded at start
+- Example: 017f45e0-7e1a-7a3f-8bbc-4dbf7e6d9c3a
+
+## Final Recommendation
+
+- Use ULID if you value short and readable IDs
+- Use UUIDv7 for maximum compatibility with existing systems
+
+Both offer significant improvements in performance and scalability over UUIDv4 and auto-increment IDs.
+
+# FAQ
+
+<details>
+  <summary>Q1: Why exactly do auto-increment IDs cause table locks?</summary>
+  
+  Auto-increment IDs require the database to generate sequential numbers. Under high concurrency, many transactions compete to get the next number, which leads to locking or contention on the table or the ID generator, slowing down inserts.
+
+</details>
+
+<details>
+  <summary>Q2: Can’t we just use UUIDv4 with some database tuning?</summary>
+  
+While some tuning can help, the core problem is the random order of UUIDv4 keys. This causes frequent page splits and tree reorganizations in B-Tree indexes, which is a fundamental inefficiency that tuning can’t fully fix.
+
+</details>
+
+<details>
+  <summary>Q3: Are ULID and UUIDv7 supported natively in popular databases?</summary>
+  
+Most databases don’t natively generate ULID or UUIDv7 yet, but you can generate them in your application layer or via extensions/functions, then store them as strings or UUID types. Support is growing as these standards gain popularity.
+
+</details>
+
+<details>
+  <summary>Q4: Which has better performance in practice, ULID or UUIDv7?</summary>
+  
+Performance differences are usually minimal because both are time-ordered. The choice depends more on readability (ULID is shorter and easier to handle) versus compatibility with existing UUID systems (UUIDv7).
+
+</details>
+
+<details>
+  <summary>Q5: How do these affect security? Can time-ordering expose sensitive info?</summary>
+  
+Time-ordering slightly reveals creation time, but this is usually acceptable. Both ULID and UUIDv7 still include randomness to prevent easy guessing of other IDs. If timestamp privacy is critical, additional measures may be needed.
+
+</details>
