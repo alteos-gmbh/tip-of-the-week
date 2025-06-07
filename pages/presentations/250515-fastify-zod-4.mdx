@@ -1,6 +1,6 @@
 # Fastify with Zod 4
 
-> Author: [Igor](igc@alteos.com)
+> Author: [Igor](igc@alteos.com)  
 > Date: 15.05.2025
 
 This presentation is on how Zod v4 is a great match to fastify APIs.
@@ -209,7 +209,7 @@ with the help of a utility function:
 function defineRoute<
   ParamsSchemaType extends z.ZodSchema,
   BodySchemaType extends z.ZodSchema,
-  QuerystringSchemaType extends z.ZodSchema
+  QuerystringSchemaType extends z.ZodSchema,
 >(
   method: string,
   path: string,
@@ -262,8 +262,6 @@ function defineRoute<
   };
 }
 ```
-
-
 
 ## Resources
 

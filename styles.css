@@ -1,0 +1,20 @@
+/* Custom styles for Nextra theme */
+:root {
+  --nextra-sidebar-width: 320px;
+}
+
+/* Make the sidebar wider */
+aside.nextra-sidebar-container {
+  width: var(--nextra-sidebar-width) !important;
+  max-width: var(--nextra-sidebar-width) !important;
+}
+
+/* Adjust the main content area to accommodate the wider sidebar */
+.nextra-container {
+  margin-left: var(--nextra-sidebar-width) !important;
+}
+
+/* Ensure the sidebar nav takes full width */
+.nextra-sidebar-container nav {
+  width: var(--nextra-sidebar-width) !important;
+}

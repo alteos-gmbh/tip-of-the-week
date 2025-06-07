@@ -7,7 +7,8 @@ const config: DocsThemeConfig = {
   editLink: {
     content: "Edit this page on GitHub",
   },
-  docsRepositoryBase: "https://github.com/alteos-gmbh/tip-of-the-week/tree/main",
+  docsRepositoryBase:
+    "https://github.com/alteos-gmbh/tip-of-the-week/tree/main",
   faviconGlyph: "✦",
   logo: (
     <span>
@@ -20,6 +21,10 @@ const config: DocsThemeConfig = {
   ),
   project: {
     link: "https://github.com/alteos-gmbh/tip-of-the-week",
+  },
+  sidebar: {
+    defaultMenuCollapseLevel: 1,
+    toggleButton: true,
   },
   head: () => {
     const config = useConfig();
