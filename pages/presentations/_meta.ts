@@ -1,6 +1,6 @@
 export default {
   "000000-template": "__Template file",
-  "250605-UUIDv7-ULID": "05.06.25 • UUIDv7 vs UUIDv7 (ULID)",
+  "250605-UUIDv7-ULID": "05.06.25 • UUIDv7 and ULID as Database Primary Key",
   "250515-fastify-zod-4": "15.05.25 • Fastify + Zod 4",
   "250417-qa-pro-toolkit": "17.04.25 • QA Pro Toolkit",
   "250403-Changesets": "03.04.25 • Changesets",
