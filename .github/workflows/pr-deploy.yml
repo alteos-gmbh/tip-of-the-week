@@ -3,6 +3,9 @@ name: Deploy PR to GitHub Pages
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+      - master # Fallback for old branches
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
