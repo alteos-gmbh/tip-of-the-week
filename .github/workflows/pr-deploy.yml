@@ -60,6 +60,14 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Prepare deployment
+        run: |
+          if [ "${{ github.head_ref }}" != "main" ]; then
+            # For non-main branches, move files to a branch-specific directory
+            mkdir -p out/${{ github.head_ref }}
+            mv out/* out/${{ github.head_ref }}/ 2>/dev/null || true
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
