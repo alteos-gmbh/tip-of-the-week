@@ -1,5 +1,6 @@
 export default {
   "000000-template": "__Template file",
+  "250612-team-dev-stages": "12.06.25 • Team Development Stages",
   "250605-UUIDv7-ULID": "05.06.25 • UUIDv7 and ULID as Database Primary Key",
   "250515-fastify-zod-4": "15.05.25 • Fastify + Zod 4",
   "250417-qa-pro-toolkit": "17.04.25 • QA Pro Toolkit",
