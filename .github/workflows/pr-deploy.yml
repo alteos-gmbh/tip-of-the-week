@@ -47,8 +47,15 @@ jobs:
 
       - name: Update Next.js config with branch name
         run: |
-          sed -i 's|basePath: "/tip-of-the-week"|basePath: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
-          sed -i 's|assetPrefix: ""|assetPrefix: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
+          if [ "${{ github.head_ref }}" = "main" ]; then
+            # For main branch, use the root path
+            sed -i 's|basePath: "/tip-of-the-week"|basePath: "/tip-of-the-week"|' next.config.mjs
+            sed -i 's|assetPrefix: ""|assetPrefix: "/tip-of-the-week"|' next.config.mjs
+          else
+            # For other branches, use the branch name in the path
+            sed -i 's|basePath: "/tip-of-the-week"|basePath: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
+            sed -i 's|assetPrefix: ""|assetPrefix: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
+          fi
 
       - name: Build
         run: pnpm build
@@ -72,7 +79,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const url = `https://alteos-gmbh.github.io/tip-of-the-week/${context.payload.pull_request.head.ref}/`;
+            const url = "${{ github.head_ref }}" === "main" 
+              ? "https://alteos-gmbh.github.io/tip-of-the-week/"
+              : `https://alteos-gmbh.github.io/tip-of-the-week/${context.payload.pull_request.head.ref}/`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
