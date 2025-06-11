@@ -13,7 +13,7 @@ Here further information about how to use [Nextra Docs](https://nextra.site/docs
 
 ---
 
-[**Live Demo →**](https://alteos-gmbh.github.io/tip-of-the-week/)
+[**Live Demo →**](https://alteos-gmbh.github.io/tip-of-the-week/main/)
 
 ![](.github/so_awesome.gif)
 
@@ -52,9 +52,12 @@ pnpm start
 
 ### 3. Deployment
 
-This project is deployed on Vercel and is automatically deployed on every push to the `main` branch.
+This project is deployed on Github Pages and is automatically deployed on every push to the `main` branch.
 
-Feature branches are also deployed automatically on Vercel:
-`https://tip-of-the-week-alteos-git-<branch-name>.alteos.vercel.app`.
+Feature branches are also deployed automatically on Github Pages when creating a Pull Request:
+
+- `https://alteos-gmbh.github.io/tip-of-the-week/<your branch name>/`
+
+When the Pull Request is merged, the branch is deleted and the deployment is removed.
 
 ---
