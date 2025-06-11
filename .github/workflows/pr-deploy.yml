@@ -41,10 +41,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Update Next.js config
+        run: |
+          sed -i 's|basePath: "/tip-of-the-week"|basePath: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
+
       - name: Build
         run: pnpm build
-        env:
-          NEXT_PUBLIC_BASE_PATH: /tip-of-the-week/${{ github.head_ref }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
