@@ -13,12 +13,11 @@ const withNextra = nextra({
 export default withNextra({
   // Next.js options
   reactStrictMode: true,
-  basePath: "",
-  assetPrefix: "",
   // Below are the necessary configurations for github pages deployment
   images: {
     unoptimized: true,
   },
   output: "export",
-  basePath: "/tip-of-the-week"
+  assetPrefix: "",
+  basePath: "/tip-of-the-week",
 });
