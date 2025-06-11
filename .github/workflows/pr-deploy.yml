@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.state != 'closed'
     steps:
@@ -44,7 +44,7 @@ jobs:
 
       - name: Update Next.js config with branch name
         run: |
-          sed -i 's|basePath: "/tip-of-the-week"|basePath: "/${{ github.head_ref }}/tip-of-the-week"|' next.config.mjs
+          sed -i 's|basePath: "/tip-of-the-week"|basePath: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
 
       - name: Build
         run: pnpm build
@@ -56,7 +56,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build-and-deploy
+    needs: build
     if: github.event.pull_request.state != 'closed'
     steps:
       - name: Deploy to GitHub Pages
