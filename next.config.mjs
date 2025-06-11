@@ -20,5 +20,5 @@ export default withNextra({
     unoptimized: true,
   },
   output: "export",
-  basePath: "/tip-of-the-week"
+  basePath: "/tip-of-the-week",
 });
