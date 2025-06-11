@@ -48,6 +48,7 @@ jobs:
       - name: Update Next.js config with branch name
         run: |
           sed -i 's|basePath: "/tip-of-the-week"|basePath: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
+          sed -i 's|assetPrefix: ""|assetPrefix: "/tip-of-the-week/${{ github.head_ref }}"|' next.config.mjs
 
       - name: Build
         run: pnpm build
